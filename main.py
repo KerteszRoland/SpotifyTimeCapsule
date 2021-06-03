@@ -1,5 +1,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from datetime import datetime
 
 
 def GetClientSecret():
@@ -19,7 +20,6 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIEND_ID,
                                                client_secret=CLIENT_SECRET,
                                                redirect_uri="https://orangethereal.hu",
                                                scope=["playlist-modify-public","user-library-read"]))
-
 
 
 def GetTrackAddedMonth(track):
@@ -85,7 +85,6 @@ def GetAllSavedTracks():
     
     
 def SavedTracksToPlaylistsByMonth():
-    from datetime import datetime
     all_tracks = GetAllSavedTracks()
     all_tracks.reverse()
     
@@ -121,4 +120,11 @@ def SaveLikedSongsToPlaylist():
         AddTracksToPlaylist(playlist_id, temp_tracks)
         track_ids = track_ids[100:]
     
+
+def SaveDiscoveryWeekly(playlist_id):
+    user_id = sp.current_user()["id"]
+    tracks = sp.user_playlist_tracks(user_id, playlist_id)["items"]
+    track_ids = [x["track"]["id"] for x in tracks]
+    saved_playlist_id = CreatePlaylist("{0.year} {0:%V}".format(datetime.today()))
+    AddTracksToPlaylist(saved_playlist_id, track_ids)
 
