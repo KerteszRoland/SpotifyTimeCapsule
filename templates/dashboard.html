@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spoti-Tool</title>
+</head>
+<body>
+    <h1>Save Liked Songs</h1>
+    <input type="button" value="Save" onclick="SaveLikedSongs()">
+	<br>
+	<h1>Create Your Time Capsule</h1>
+    <input type="button" value="Save" onclick="CreateTimeCapsule()">
+	<br>
+	<h1>Save Discover Weekly</h1>
+    <input type="button" value="Save" onclick="SaveDiscoverWeekly()">
+</body>
+<script>
+    function SendRequest(endpoint){
+        const url = "http://localhost/api/"+`${endpoint}`
+        fetch(url, {
+            method: 'GET'
+        })
+    }
+
+    function SaveLikedSongs() {
+        SendRequest("save_liked_songs");
+    }
+	
+	function SaveDiscoverWeekly() {
+		const url = "http://localhost/api/save_discover_weekly"
+			fetch(url, {
+				method: 'GET'
+			})
+		.then((response) => response.json())
+		.then((json) => {
+			if(json["status"] === "ok" && json.hasOwnProperty("playlist_url"))
+			{
+				window.location.replace(json["playlist_url"]);
+			}
+			else
+			{
+				console.log(json)
+			}
+					
+		});
+    }
+
+	function CreateTimeCapsule() {
+		SendRequest("create_time_capsule");
+	}
+</script>
+</html>

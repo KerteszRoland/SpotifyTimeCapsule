@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spoti-Tool</title>
+</head>
+<body>
+    <h1>Log in With Spotify</h1>
+    <input type="button" value="Log in" onclick="Login()">
+</body>
+<script>
+	function Login() {
+		redirect_uri = "http://localhost/dashboard";
+		my_client_id = "a19a2ed0d72544649fa79140d716ea29";
+		var scopes = 'playlist-modify-public user-library-read user-read-private user-read-currently-playing user-read-playback-state user-modify-playback-state';
+		window.location.replace('https://accounts.spotify.com/authorize' +
+		'?response_type=code' +
+		'&client_id=' + my_client_id +
+		(scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+		'&redirect_uri=' + encodeURIComponent(redirect_uri));
+	}
+</script>
+</html>
